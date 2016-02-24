@@ -1,7 +1,7 @@
 ci-automation
 =============
 
-CI (Continuous Integration) setup automation script using (Fabric)[http://www.fabfile.org/].
+CI (Continuous Integration) setup automation script using [Fabric](http://www.fabfile.org/).
 
 ### Usage:
 
