@@ -27,8 +27,9 @@ def install_jdk_7():
         http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz')
         run('tar -zxvf jdk-7u80-linux-x64')
         sudo('mv jdk1.7.0_80 /usr/lib/jvm')
-    run('printf "%s\n" "JAVA_HOME=/usr/lib/jvm/jdk1.7.0_80" "PATH=$JAVA_HOME:$PATH" >> ~/.bashrc')
-    run('. ~/.bashrc')
+    run('echo "export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_80" >> $HOME/.bashrc')
+    run('echo "PATH=$JAVA_HOME/bin:$PATH" >> $HOME/.bashrc')
+    run('. $HOME/.bashrc')
 
 
 def install_nginx():
