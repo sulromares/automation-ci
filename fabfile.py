@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from fabric import cd, run, sudo
+from fabric.api import cd, run, sudo
+from fabric.contrib.files import exists
 
 # configuration
 
@@ -43,4 +44,23 @@ def install_nexus():
 
 
 def install_sonarqube():
-    pass
+    ensure_dir_exists('/opt/sonar', use_sudo=True)
+    ensure_dir_exists('$HOME/tools')
+
+    with cd('$HOME/tools'):
+        run('wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-5.3.zip')
+        run('unzip sonarqube-5.3.zip')
+        sudo('mv sonarqube-5.3 /opt/sonar')
+
+    run('echo "export SONAR_HOME=/opt/sonar" >> $HOME/.bashrc')
+    run('. $HOME/.bashrc')
+
+# helper functions
+def ensure_dir_exists(dir_path, use_sudo=False):
+    cmd = run
+    if use_sudo:
+        cmd = sudo
+
+    if not exists(dir_path, use_sudo):
+        cmd('mkdir ' + dir_path)
+
