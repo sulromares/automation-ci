@@ -48,8 +48,7 @@ RUN wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud
 RUN tar -zxvf google-cloud-sdk-98.0.0-linux-x86_64.tar.gz -C /home/jenkins/programs
 RUN /home/jenkins/programs/google-cloud-sdk/install.sh
 
-# add gcloud, java, maven, sonarqube runner to PATH
-ENV PATH $DOWNLOAD_DIR/google-cloud-sdk/bin:/usr/lib/jvm/java-7-oracle/bin:$DOWNLOAD_DIR/apache-maven-3.3.9/bin:$DOWNLOAD_DIR/sonar-scanner-2.5/bin:$PATH
+ENV PATH $DOWNLOAD_DIR/google-cloud-sdk/bin:$PATH
 
 RUN wget -O /home/jenkins/.service-account-auth.json $GCLOUD_SERVICE_ACCOUNT_AUTH_URL
 RUN gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT_EMAIL --key-file /home/jenkins/.service-account-auth.json
@@ -75,6 +74,9 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 RUN unzip sonar-scanner-2.5.zip -d /home/jenkins/programs
 
 ENV SONAR_RUNNER_HOME /home/jenkins/programs/sonar-scanner-2.5
+
+# add java, maven, sonarqube runner to PATH
+RUN echo "export PATH=/usr/lib/jvm/java-7-oracle/bin:$DOWNLOAD_DIR/apache-maven-3.3.9/bin:$DOWNLOAD_DIR/sonar-scanner-2.5/bin:$PATH" >> /home/jenkins/.bashrc
 
 # switch to root user for sshd configuration
 USER root
