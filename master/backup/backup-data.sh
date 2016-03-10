@@ -2,7 +2,7 @@
 
 now=$(date +%Y%m%d%H%M%S)
 token=$(python ../../utils/access_token.py)
-prefix=${PWD##*/}
+prefix=$(basename -- "$(dirname -- "$(pwd)")")
 
 echo "Backing up jenkins data..."
 
