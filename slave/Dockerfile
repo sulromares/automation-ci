@@ -78,6 +78,9 @@ RUN unzip sonar-scanner-2.5.zip -d /home/jenkins/programs
 ENV SONAR_RUNNER_HOME /home/jenkins/programs/sonar-scanner-2.5
 ENV PATH $SONAR_RUNNER_HOME/bin:$PATH
 
+# switch to root user for sshd configuration
+USER root
+
 # configure ssh
 RUN mkdir /var/run/sshd
 
