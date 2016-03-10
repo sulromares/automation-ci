@@ -59,7 +59,7 @@ ENV PATH JAVA_HOME/bin:$PATH
 
 # configure maven
 RUN wget http://ftp.jaist.ac.jp/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
-RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz -C /homejenkins/programs
+RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz -C /home/jenkins/programs
 
 ENV M2_HOME /home/jenkins/programs/apache-maven-3.3.9
 ENV PATH $M2_HOME/bin:$PATH
