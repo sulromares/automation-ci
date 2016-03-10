@@ -1,19 +1,25 @@
 version: '2'
 services:
   jenkins:
-    image: jenkins
+    build:
+      context: .
+      dockerfile: jenkins.Dockerfile
     ports:
      - 8080:8080
     volumes:
      - jenkins-data:/var/jenkins_home
   nexus:
-    image: sonatype/nexus
+    build:
+      context: .
+      dockerfile: nexus.Dockerfile
     ports:
      - 8081:8081
     volumes:
      - nexus-data:/sonatype-work
   sonar:
-    image: sonarqube
+    build:
+      context: .
+      dockerfile: sonar.Dockerfile
     ports:
      - 9000:9000
     links:
@@ -24,7 +30,9 @@ services:
      - sonar-data:/opt/sonarqube/extensions
      - sonar-data:/opt/sonarqube/lib/bundled-plugins
   postgres:
-    image: postgres
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
     environment:
      - POSTGRES_USER=sonar
      - POSTGRES_PASSWORD=sonar
@@ -39,4 +47,3 @@ volumes:
     driver: local
   postgres-data:
     driver: local
- 
