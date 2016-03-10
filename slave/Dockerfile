@@ -72,8 +72,8 @@ RUN wget -P /home/jenkins/.m2 https://bitbucket.org/api/2.0/snippets/cloudsherpa
 RUN sed -i "s|{release-server-id}|$NEXUS_RELEASE_SERVER_ID|g" /home/jenkins/.m2/settings.xml && sed -i "s|{release-server-uname}|$NEXUS_RELEASE_SERVER_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{release-server-passwd}|$NEXUS_RELEASE_SERVER_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-id}|$NEXUS_SNAPSHOT_SERVER_ID|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-uname}|$NEXUS_SNAPSHOT_SERVER_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-passwd}|$NEXUS_SNAPSHOT_SERVER_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{nexus-url}|$NEXUS_URL|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.login}|$SONAR_LOGIN|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.password}|$SONAR_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.jdbc.url}|$SONAR_JDBC_URL|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.jdbc.uname}|$SONAR_JDBC_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.jdbc.passwd}|$SONAR_JDBC_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.host.url}|$SONAR_HOST_URL|g" /home/jenkins/.m2/settings.xml
 
 # configure sonarqube scanner
-RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-1.5.zip
-RUN unzip sonar-scanner-2.5.zip -d /homejenkins/programs
+RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.5.zip
+RUN unzip sonar-scanner-2.5.zip -d /home/jenkins/programs
 
 ENV SONAR_RUNNER_HOME /home/jenkins/programs/sonar-scanner-2.5
 ENV PATH $SONAR_RUNNER_HOME/bin:$PATH
