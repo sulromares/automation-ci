@@ -82,6 +82,7 @@ ENV PATH $SONAR_RUNNER_HOME/bin:$PATH
 RUN mkdir /var/run/sshd
 
 RUN sed -ri "s/UsePAM yes/#UsePAM yes/g" /etc/ssh/sshd_config
+RUN sed -ri "s/Port 22/Port 2222/g" /etc/ssh/sshd_config
 
 EXPOSE 2222
 
