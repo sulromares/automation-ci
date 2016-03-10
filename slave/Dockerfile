@@ -33,7 +33,7 @@ RUN apt-get update
 RUN apt-get install -y openssh-server oracle-java7-installer git-core unzip curl
 
 # create jenkins user
-RUN useradd -m jenkins
+RUN useradd -m jenkins -s /bin/bash
 # add password for jenkins user
 RUN echo jenkins:jenkins | chpasswd
 
