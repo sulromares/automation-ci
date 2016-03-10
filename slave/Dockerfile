@@ -33,7 +33,7 @@ RUN apt-get update
 RUN apt-get install -y openssh-server oracle-java7-installer git-core unzip curl
 
 # create jenkins user
-RUN useradd -m jenkins
+RUN useradd -m jenkins -s /bin/bash
 # add password for jenkins user
 RUN echo jenkins:jenkins | chpasswd
 
@@ -48,21 +48,20 @@ RUN wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud
 RUN tar -zxvf google-cloud-sdk-98.0.0-linux-x86_64.tar.gz -C /home/jenkins/programs
 RUN /home/jenkins/programs/google-cloud-sdk/install.sh
 
-ENV PATH /home/jenkins/programs/google-cloud-sdk/bin:$PATH
+# add gcloud, java, maven, sonarqube runner to PATH
+ENV PATH $DOWNLOAD_DIR/google-cloud-sdk/bin:/usr/lib/jvm/java-7-oracle/bin:$DOWNLOAD_DIR/apache-maven-3.3.9/bin:$DOWNLOAD_DIR/sonar-scanner-2.5/bin:$PATH
 
 RUN wget -O /home/jenkins/.service-account-auth.json $GCLOUD_SERVICE_ACCOUNT_AUTH_URL
 RUN gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT_EMAIL --key-file /home/jenkins/.service-account-auth.json
 
 # configure java
 ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
-ENV PATH JAVA_HOME/bin:$PATH
 
 # configure maven
 RUN wget http://ftp.jaist.ac.jp/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 RUN tar -zxvf apache-maven-3.3.9-bin.tar.gz -C /home/jenkins/programs
 
 ENV M2_HOME /home/jenkins/programs/apache-maven-3.3.9
-ENV PATH $M2_HOME/bin:$PATH
 
 # create m2 directory and download boilerplate settings.xml
 RUN mkdir /home/jenkins/.m2
@@ -76,7 +75,6 @@ RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-sc
 RUN unzip sonar-scanner-2.5.zip -d /home/jenkins/programs
 
 ENV SONAR_RUNNER_HOME /home/jenkins/programs/sonar-scanner-2.5
-ENV PATH $SONAR_RUNNER_HOME/bin:$PATH
 
 # switch to root user for sshd configuration
 USER root
