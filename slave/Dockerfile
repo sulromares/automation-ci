@@ -48,7 +48,7 @@ RUN wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud
 RUN tar -zxvf google-cloud-sdk-98.0.0-linux-x86_64.tar.gz -C /home/jenkins/programs
 RUN /home/jenkins/programs/google-cloud-sdk/install.sh
 
-ENV PATH $DOWNLOAD_DIR/google-cloud-sdk/bin:
+ENV PATH $DOWNLOAD_DIR/google-cloud-sdk/bin:$PATH
 
 RUN wget -O /home/jenkins/.service-account-auth.json $GCLOUD_SERVICE_ACCOUNT_AUTH_URL
 RUN gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT_EMAIL --key-file /home/jenkins/.service-account-auth.json
