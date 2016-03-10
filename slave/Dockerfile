@@ -1,4 +1,4 @@
-FROM       ubuntu:14.04
+FROM ubuntu:14.04
 
 # install Oracle JDK 7, SSH, git, unzip, curl (and dependencies)
 RUN apt-get install -yq software-properties-common
@@ -30,7 +30,7 @@ RUN add-apt-repository -y ppa:webupd8team/java
 RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
 
 RUN apt-get update
-RUN apt-get install -yq openssh-server oracle-java7-installer git-core unzip curl
+RUN apt-get install -y openssh-server oracle-java7-installer git-core unzip curl
 
 # create jenkins user
 RUN useradd -m jenkins
@@ -83,7 +83,6 @@ RUN mkdir /var/run/sshd
 
 RUN sed -ri "s/UsePAM yes/#UsePAM yes/g" /etc/ssh/sshd_config
 
-EXPOSE 22
+EXPOSE 2222
 
 CMD ["/usr/sbin/sshd", "-D"]
-
