@@ -1,0 +1,22 @@
+version: '2'
+services:
+  slave:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXUS_RELEASE_SERVER_ID=edit-me
+        - NEXUS_RELEASE_SERVER_UNAME=edit-me
+        - NEXUS_RELEASE_SERVER_PASSWD=edit-me
+        - NEXUS_SNAPSHOT_SERVER_ID=edit-me
+        - NEXUS_SNAPSHOT_SERVER_UNAME=edit-me
+        - NEXUS_SNAPSHOT_SERVER_PASSWD=edit-me
+        - NEXUS_URL=edit-me
+        - SONAR_LOGIN=edit-me
+        - SONAR_PASSWD=edit-me
+        - SONAR_JDBC_URL=edit-me
+        - SONAR_JDBC_UNAME=edit-me
+        - SONAR_JDBC_PASSWD=edit-me
+        - SONAR_HOST_URL=edit-me
+        - GCLOUD_SERVICE_ACCOUNT_EMAIL=edit-me
+        - GCLOUD_SERVICE_ACCOUNT_AUTH_URL=edit-me
