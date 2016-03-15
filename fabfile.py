@@ -10,6 +10,7 @@ from fabric.operations import prompt
 def master():
     clone_ci_automation()
     with cd('$HOME/docker-script/ci-automation/master'):
+        run('sh backup/backup-data.sh')
         run('docker-compose up -d')
 
 
