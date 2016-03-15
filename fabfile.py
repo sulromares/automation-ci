@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from fabric.api import cd, run
+from fabric.api import cd, run, sudo
 from fabric.contrib.files import exists
 from fabric.operations import prompt
 
 
 # master instance setup
 def master():
+    sudo('apt-get install git')
     clone_ci_automation()
+    install_deps("master")
     with cd('$HOME/docker-script/ci-automation/master'):
         run('sh backup/backup-data.sh')
         run('docker-compose up -d')
@@ -16,7 +18,9 @@ def master():
 
 # slave instance setup
 def slave():
+    sudo('apt-get install git')
     clone_ci_automation()
+    install_deps("slave")
     with cd('$HOME/docker-script/ci-automation/slave'):
         run('echo Note: The docker-compose.yml args must have correct values.', quiet=True)
         response = prompt('Is the docker-compose.yml already updated (y/N) ?')
@@ -34,6 +38,14 @@ def clone_ci_automation():
         run('mkdir $HOME/docker-script')
         with cd('$HOME/docker-script'):
             run('git clone https://bitbucket.org/cloudsherpas/ci-automation')
+
+
+def install_deps(ci_env):
+    with cd('$HOME/docker-script/ci-automation'):
+        if env == "master":
+            run('sh install.sh master')
+        elif env == "slave":
+            run('sh install.sh')
 
 
 def populate_slave_arg(arg_key, arg_val):
