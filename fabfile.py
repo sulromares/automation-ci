@@ -1,67 +1,50 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from fabric.api import cd, run, sudo
+from fabric.api import cd, run
 from fabric.contrib.files import exists
-
-# configuration
-
-# main functions
-def configure_env():
-    create_tools_dir()
-    install_jdk_7()
-    install_nginx()
-    install_nexus()
-    install_sonarqube()
-    install_jenkins()
+from fabric.operations import prompt
 
 
-def create_tools_dir():
-    run('mkdir $HOME/tools')
+# master instance setup
+def master():
+    clone_ci_automation()
+    with cd('$HOME/docker-script/ci-automation/master'):
+        run('docker-compose up -d')
 
 
-def install_jdk_7():
-    sudo('mkdir /usr/lib/jvm')
-    with cd('$HOME/tools'):
-        run('wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-        http://download.oracle.com/otn-pub/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz')
-        run('tar -zxvf jdk-7u80-linux-x64')
-        sudo('mv jdk1.7.0_80 /usr/lib/jvm')
-    run('echo "export JAVA_HOME=/usr/lib/jvm/jdk1.7.0_80" >> $HOME/.bashrc')
-    run('echo "PATH=$JAVA_HOME/bin:$PATH" >> $HOME/.bashrc')
-    run('. $HOME/.bashrc')
+# slave instance setup
+def slave():
+    clone_ci_automation()
+    with cd('$HOME/docker-script/ci-automation/slave'):
+        prompt('Note: The docker-compose.yml args must have correct values.')
+        response = prompt('Is the docker-compose.yml already updated (y/N) ?')
+
+        if response in ['N', 'n']:
+            for arg in get_list_of_args():
+                response = prompt("Enter value for %s:" % arg)
+                populate_slave_arg(arg + "_VAL", response)
+
+    run('docker-compose up -d')
 
 
-def install_nginx():
-    pass
+def clone_ci_automation():
+    if not exists('$HOME/docker-script'):
+        run('mkdir $HOME/docker-script')
+        with cd('$HOME/docker-script'):
+            run('git clone https://bitbucket.org/cloudsherpas/ci-automation')
 
 
-def install_jenkins():
-    pass
+def populate_slave_arg(arg_key, arg_val):
+    run('pwd')
+    run('sed -i "s|%s|%s|g" docker-compose.yml' % (arg_key, arg_val))
 
 
-def install_nexus():
-    pass
-
-
-def install_sonarqube():
-    ensure_dir_exists('/opt/sonar', use_sudo=True)
-    ensure_dir_exists('$HOME/tools')
-
-    with cd('$HOME/tools'):
-        run('wget https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-5.3.zip')
-        run('unzip sonarqube-5.3.zip')
-        sudo('mv sonarqube-5.3 /opt/sonar')
-
-    run('echo "export SONAR_HOME=/opt/sonar" >> $HOME/.bashrc')
-    run('. $HOME/.bashrc')
-
-# helper functions
-def ensure_dir_exists(dir_path, use_sudo=False):
-    cmd = run
-    if use_sudo:
-        cmd = sudo
-
-    if not exists(dir_path, use_sudo):
-        cmd('mkdir ' + dir_path)
-
+def get_list_of_args():
+    return ['NEXUS_RELEASE_SERVER_ID', 'NEXUS_RELEASE_SERVER_UNAME',
+            'NEXUS_RELEASE_SERVER_PASSWD', 'NEXUS_SNAPSHOT_SERVER_ID',
+            'NEXUS_SNAPSHOT_SERVER_UNAME', 'NEXUS_SNAPSHOT_SERVER_PASSWD',
+            'NEXUS_URL', 'SONAR_LOGIN', 'SONAR_PASSWD', 'SONAR_JDBC_URL',
+            'SONAR_JDBC_UNAME', 'SONAR_JDBC_PASSWD', 'SONAR_HOST_URL',
+            'GCLOUD_SERVICE_ACCOUNT_EMAIL', 'GCLOUD_SERVICE_ACCOUNT_AUTH_URL'
+            ]
