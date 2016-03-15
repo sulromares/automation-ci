@@ -17,10 +17,10 @@ def master():
 def slave():
     clone_ci_automation()
     with cd('$HOME/docker-script/ci-automation/slave'):
-        prompt('Note: The docker-compose.yml args must have correct values.')
+        run('echo Note: The docker-compose.yml args must have correct values.', quiet=True)
         response = prompt('Is the docker-compose.yml already updated (y/N) ?')
 
-        if response in ['N', 'n']:
+        if response not in ['Y', 'y']:
             for arg in get_list_of_args():
                 response = prompt("Enter value for %s:" % arg)
                 populate_slave_arg(arg + "_VAL", response)
@@ -36,8 +36,7 @@ def clone_ci_automation():
 
 
 def populate_slave_arg(arg_key, arg_val):
-    run('pwd')
-    run('sed -i "s|%s|%s|g" docker-compose.yml' % (arg_key, arg_val))
+    run('sed -i "s|%s|%s|g" docker-compose.yml' % (arg_key, arg_val), quiet=True)
 
 
 def get_list_of_args():
