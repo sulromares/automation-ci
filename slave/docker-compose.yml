@@ -1,6 +1,8 @@
 version: '2'
 services:
   slave:
+    ports:
+     - 2222:2222
     build:
       context: .
       dockerfile: Dockerfile
