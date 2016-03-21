@@ -16,9 +16,6 @@ ARG NEXUS_URL
 
 ARG SONAR_LOGIN
 ARG SONAR_PASSWD
-ARG SONAR_JDBC_URL
-ARG SONAR_JDBC_UNAME
-ARG SONAR_JDBC_PASSWD
 ARG SONAR_HOST_URL
 
 ARG GCLOUD_SERVICE_ACCOUNT_EMAIL
@@ -67,7 +64,7 @@ RUN mkdir /home/jenkins/.m2
 RUN wget -P /home/jenkins/.m2 https://bitbucket.org/api/2.0/snippets/cloudsherpas/erBRR/HEAD/files/settings.xml
 
 # populate settings.xml with nexus, sonarqube credentials
-RUN sed -i "s|{release-server-id}|$NEXUS_RELEASE_SERVER_ID|g" /home/jenkins/.m2/settings.xml && sed -i "s|{release-server-uname}|$NEXUS_RELEASE_SERVER_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{release-server-passwd}|$NEXUS_RELEASE_SERVER_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-id}|$NEXUS_SNAPSHOT_SERVER_ID|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-uname}|$NEXUS_SNAPSHOT_SERVER_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-passwd}|$NEXUS_SNAPSHOT_SERVER_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{nexus-url}|$NEXUS_URL|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.login}|$SONAR_LOGIN|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.password}|$SONAR_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.jdbc.url}|$SONAR_JDBC_URL|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.jdbc.uname}|$SONAR_JDBC_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.jdbc.passwd}|$SONAR_JDBC_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.host.url}|$SONAR_HOST_URL|g" /home/jenkins/.m2/settings.xml
+RUN sed -i "s|{release-server-id}|$NEXUS_RELEASE_SERVER_ID|g" /home/jenkins/.m2/settings.xml && sed -i "s|{release-server-uname}|$NEXUS_RELEASE_SERVER_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{release-server-passwd}|$NEXUS_RELEASE_SERVER_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-id}|$NEXUS_SNAPSHOT_SERVER_ID|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-uname}|$NEXUS_SNAPSHOT_SERVER_UNAME|g" /home/jenkins/.m2/settings.xml && sed -i "s|{snapshot-server-passwd}|$NEXUS_SNAPSHOT_SERVER_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{nexus-url}|$NEXUS_URL|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.login}|$SONAR_LOGIN|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.password}|$SONAR_PASSWD|g" /home/jenkins/.m2/settings.xml && sed -i "s|{sonar.host.url}|$SONAR_HOST_URL|g" /home/jenkins/.m2/settings.xml
 
 # configure sonarqube scanner
 RUN wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.5.zip
