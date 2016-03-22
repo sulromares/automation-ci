@@ -29,7 +29,7 @@ RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true 
 RUN apt-get update
 RUN apt-get install -y openssh-server oracle-java7-installer git-core unzip curl
 
-RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
 RUN apt-get install -y nodejs
 
 # create jenkins user
